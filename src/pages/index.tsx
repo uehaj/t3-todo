@@ -1,6 +1,6 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { FormEvent } from "react";
+import type { FormEvent } from "react";
 import { api } from "~/utils/api";
 
 const TodoApp: NextPage = () => {
@@ -8,35 +8,35 @@ const TodoApp: NextPage = () => {
   const todos = api.todo.getAll.useQuery();
   const { mutateAsync: todoUpdateAsync } = api.todo.add.useMutation({
     onSuccess: () => {
-      utils.todo.invalidate();
+      void utils.todo.invalidate();
     },
   });
   const { mutateAsync: todoDeleteAsync } = api.todo.delete.useMutation({
     onSuccess: () => {
-      utils.todo.invalidate();
+      void utils.todo.invalidate();
     },
   });
   const { mutateAsync: todoDoneAsync } = api.todo.done.useMutation({
     onSuccess: () => {
-      utils.todo.invalidate();
+      void utils.todo.invalidate();
     },
   });
 
-  async function handleSubmit(e: FormEvent) {
+  function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
     const formJson = Object.fromEntries(formData.entries());
-    await todoUpdateAsync(formJson as any);
     form.reset();
+    void todoUpdateAsync(formJson as { text: string });
   }
 
-  async function handleDelete(id: string) {
-    todoDeleteAsync({ id });
+  function handleDelete(id: string) {
+    void todoDeleteAsync({ id });
   }
 
-  async function handleDone(id: string, done: boolean) {
-    todoDoneAsync({ id, done });
+  function handleDone(id: string, done: boolean) {
+    void todoDoneAsync({ id, done });
   }
 
   return (
@@ -47,25 +47,25 @@ const TodoApp: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div className="container mx-auto p-4">
-        <h1 className="text-4xl font-bold mb-4">Todoアプリ</h1>
+        <h1 className="mb-4 text-4xl font-bold">Todoアプリ</h1>
         <div className="flex-row">
           <form onSubmit={handleSubmit}>
             <input
-              className="border p-2 rounded w-[70%] mb-4 mr-4"
+              className="mb-4 mr-4 w-[70%] rounded border p-2"
               type="text"
               name="text"
               placeholder="新しいタスクを入力"
             />
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 w-[20%]">
+            <button className="mb-4 w-[20%] rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
               タスクを追加
             </button>
           </form>
         </div>
-        <ul id="taskList" className="list-disc list-inside">
+        <ul id="taskList" className="list-inside list-disc">
           <ul>
             {todos.data?.map((todo) => (
               <li
-                className="bg-white p-2 rounded mb-2 flex items-center"
+                className="mb-2 flex items-center rounded bg-white p-2"
                 key={todo.id}
               >
                 <input
@@ -78,7 +78,7 @@ const TodoApp: NextPage = () => {
                   {todo.text}
                 </span>
                 <button
-                  className="ml-auto bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+                  className="ml-auto rounded bg-red-500 px-2 py-1 font-bold text-white hover:bg-red-700"
                   onClick={handleDelete.bind(null, todo.id)}
                 >
                   ×
