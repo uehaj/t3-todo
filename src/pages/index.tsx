@@ -48,22 +48,22 @@ const TodoApp: NextPage = () => {
       </Head>
       <div className="container mx-auto p-4">
         <h1 className="mb-4 text-4xl font-bold">Todoアプリ</h1>
-        <div className="flex-row">
-          <form onSubmit={handleSubmit}>
+        <div>
+          <form className="flex" onSubmit={handleSubmit}>
             <input
-              className="mb-4 mr-4 w-[70%] rounded border p-2"
+              className="mb-4 mr-4 flex-grow rounded border p-2"
               type="text"
               name="text"
               placeholder="新しいタスクを入力"
             />
-            <button className="mb-4 w-[20%] rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
+            <button className="mb-4 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
               タスクを追加
             </button>
           </form>
         </div>
         <ul id="taskList" className="list-inside list-disc">
           <ul>
-            {todos.data?.map((todo) => (
+            {[...(todos.data ?? [])]?.reverse().map((todo) => (
               <li
                 className="mb-2 flex items-center rounded bg-white p-2"
                 key={todo.id}
