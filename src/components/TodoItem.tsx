@@ -3,19 +3,19 @@ import Card from "~/components/Card";
 import { RouterOutputs } from "~/utils/api";
 
 type Props = {
-  todoItem: RouterOutputs["todo"]["add"];
+  todo: RouterOutputs["todo"]["add"];
   deleteTodo: (id: string) => void;
   doneTodo: (id: string, status: boolean) => void;
 };
 
-export default function Task({ todoItem, deleteTodo, doneTodo }: Props) {
+export default function TodoItem({ todo, deleteTodo, doneTodo }: Props) {
   return (
-    <li className="mb-2 flex items-center rounded  p-2" key={todoItem.id}>
+    <li className="mb-2 flex items-center rounded  p-2" key={todo.id}>
       <Card
         actionArea={
           <button
             className="ml-auto rounded bg-red-500 px-2 py-1 font-bold text-white hover:bg-red-700"
-            onClick={() => deleteTodo(todoItem.id)}
+            onClick={() => deleteTodo(todo.id)}
           >
             ×
           </button>
@@ -24,12 +24,10 @@ export default function Task({ todoItem, deleteTodo, doneTodo }: Props) {
         <input
           type="checkbox"
           className="mr-2"
-          checked={todoItem.done}
-          onChange={() => doneTodo(todoItem.id, !todoItem.done)}
+          checked={todo.done}
+          onChange={() => doneTodo(todo.id, !todo.done)}
         />
-        <span className={todoItem.done ? "line-through" : ""}>
-          {todoItem.text}
-        </span>
+        <span className={todo.done ? "line-through" : ""}>{todo.text}</span>
       </Card>
     </li>
   );

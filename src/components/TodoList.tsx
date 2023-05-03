@@ -6,15 +6,11 @@ type Props = {
   doneTodo: (id: string, status: boolean) => void;
 };
 
-export default function TaskList({ todoList, deleteTodo, doneTodo }: Props) {
+export default function TodoList({ todoList, deleteTodo, doneTodo }: Props) {
   return (
     <ul id="taskList" className="list-inside list-disc">
-      {todoList.map((todoItem) => (
-        <TodoListItem
-          todoItem={todoItem}
-          deleteTodo={deleteTodo}
-          doneTodo={doneTodo}
-        />
+      {todoList.map((todo) => (
+        <TodoListItem todo={todo} deleteTodo={deleteTodo} doneTodo={doneTodo} />
       ))}
     </ul>
   );
