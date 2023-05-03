@@ -6,7 +6,7 @@ import { api } from "~/utils/api";
 const TodoApp: NextPage = () => {
   const utils = api.useContext();
   const todos = api.todo.getAll.useQuery();
-  const { mutateAsync: todoUpdateAsync } = api.todo.add.useMutation({
+  const { mutateAsync: todoAddAsync } = api.todo.add.useMutation({
     onSuccess: () => {
       void utils.todo.invalidate();
     },
@@ -28,7 +28,7 @@ const TodoApp: NextPage = () => {
     const formData = new FormData(form);
     const formJson = Object.fromEntries(formData.entries());
     form.reset();
-    void todoUpdateAsync(formJson as { text: string });
+    void todoAddAsync(formJson as { text: string });
   }
 
   function handleDelete(id: string) {
