@@ -1,6 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import type { FormEvent } from "react";
+import TodoList from "~/components/TodoList";
 import { api } from "~/utils/api";
 
 const TodoApp: NextPage = () => {
@@ -46,10 +47,10 @@ const TodoApp: NextPage = () => {
         <meta name="description" content="TodoApp by create-t3-app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="container mx-auto p-4">
+      <div className="container mx-auto flex min-h-screen flex-col items-center justify-start border-4 bg-slate-50">
         <h1 className="mb-4 text-4xl font-bold">Todoアプリ</h1>
         <div>
-          <form className="flex" onSubmit={handleSubmit}>
+          <form className="w-10rem flex" onSubmit={handleSubmit}>
             <input
               className="mb-4 mr-4 flex-grow rounded border p-2"
               type="text"
@@ -61,32 +62,11 @@ const TodoApp: NextPage = () => {
             </button>
           </form>
         </div>
-        <ul id="taskList" className="list-inside list-disc">
-          <ul>
-            {[...(todos.data ?? [])]?.reverse().map((todo) => (
-              <li
-                className="mb-2 flex items-center rounded bg-white p-2"
-                key={todo.id}
-              >
-                <input
-                  type="checkbox"
-                  className="mr-2"
-                  checked={todo.done}
-                  onChange={handleDone.bind(null, todo.id, !todo.done)}
-                />
-                <span className={todo.done ? "line-through" : ""}>
-                  {todo.text}
-                </span>
-                <button
-                  className="ml-auto rounded bg-red-500 px-2 py-1 font-bold text-white hover:bg-red-700"
-                  onClick={handleDelete.bind(null, todo.id)}
-                >
-                  ×
-                </button>
-              </li>
-            ))}
-          </ul>
-        </ul>
+        <TodoList
+          todoList={[...(todos.data ?? [])]?.reverse()}
+          deleteTodo={handleDelete}
+          doneTodo={handleDone}
+        />
       </div>
     </>
   );
