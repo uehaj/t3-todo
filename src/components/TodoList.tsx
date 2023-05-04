@@ -8,10 +8,10 @@ type Props = {
 
 export default function TodoList({ todoList, deleteTodo, doneTodo }: Props) {
   return (
-    <ul id="taskList" className="list-inside list-disc">
+    <div className="flex">
       {todoList.map((todo) => (
         <TodoListItem todo={todo} deleteTodo={deleteTodo} doneTodo={doneTodo} />
       ))}
-    </ul>
+    </div>
   );
 }
