@@ -1,61 +1,29 @@
-<<<<<<< HEAD
 import type { FormEvent } from "react";
 
 type Props = {
-  addTodo: ({ text }: { text: string }) => void;
+  onSubmitTodo: (formData: FormData) => void;
 };
 
-export default function TodoInput({ addTodo }: Props) {
+export default function TodoInput({ onSubmitTodo }: Props) {
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
-    const formJson = Object.fromEntries(formData.entries());
     form.reset();
-    addTodo(formJson as { text: string });
+    onSubmitTodo(formData);
   }
 
   return (
     <div>
       <form className="w-10rem flex" onSubmit={handleSubmit}>
         <input
-          className="mb-4 mr-4 flex-grow rounded border p-2"
           type="text"
           name="text"
           placeholder="新しいタスクを入力"
+          className="mb-xl input mr-2 w-full bg-white"
         />
-        <button className="mb-4 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
-          タスクを追加
-        </button>
+        <button className="btn">タスクを追加</button>
       </form>
     </div>
   );
 }
-||||||| c502b64
-=======
-import { MouseEventHandler } from "react";
-import Card from "~/components/Card";
-import { RouterOutputs } from "~/utils/api";
-
-type Props = {
-  addTodo: (id: string) => void;
-};
-
-export default function TodoInput({ addTodo }: Props) {
-  return (
-    <div>
-      <form className="w-10rem flex" onSubmit={addTodo}>
-        <input
-          className="mb-4 mr-4 flex-grow rounded border p-2"
-          type="text"
-          name="text"
-          placeholder="新しいタスクを入力"
-        />
-        <button className="mb-4 rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700">
-          タスクを追加
-        </button>
-      </form>
-    </div>
-  );
-}
->>>>>>> main

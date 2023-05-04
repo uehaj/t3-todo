@@ -1,16 +1,25 @@
+import { Todo } from "@prisma/client";
 import TodoListItem from "./TodoItem";
-import type { RouterOutputs } from "~/utils/api";
+
 type Props = {
-  todoList: RouterOutputs["todo"]["add"][];
-  deleteTodo: (id: string) => void;
-  doneTodo: (id: string, status: boolean) => void;
+  todoList: Todo[];
+  onDeleteTodo: (id: string) => void;
+  onDoneTodo: (id: string, status: boolean) => void;
 };
 
-export default function TodoList({ todoList, deleteTodo, doneTodo }: Props) {
+export default function TodoList({
+  todoList,
+  onDeleteTodo,
+  onDoneTodo,
+}: Props) {
   return (
-    <div className="flex">
+    <div className="flex flex-col">
       {todoList.map((todo) => (
-        <TodoListItem todo={todo} deleteTodo={deleteTodo} doneTodo={doneTodo} />
+        <TodoListItem
+          todo={todo}
+          onDeleteTodo={onDeleteTodo}
+          onDoneTodo={onDoneTodo}
+        />
       ))}
     </div>
   );

@@ -23,15 +23,16 @@ const TodoApp: NextPage = () => {
     },
   });
 
-  function handleAdd({ text }: { text: string }) {
-    void todoAddAsync({ text });
+  function handleAddTodo(formData: FormData) {
+    const formJson = Object.fromEntries(formData.entries());
+    void todoAddAsync(formJson as { text: string });
   }
 
-  function handleDelete(id: string) {
+  function handleDeleteTodo(id: string) {
     void todoDeleteAsync({ id });
   }
 
-  function handleDone(id: string, done: boolean) {
+  function handleDoneTodo(id: string, done: boolean) {
     void todoDoneAsync({ id, done });
   }
 
@@ -44,11 +45,11 @@ const TodoApp: NextPage = () => {
       </Head>
       <div className="container mx-auto p-4">
         <h1 className="mb-4 text-4xl font-bold">Todoアプリ</h1>
-        <TodoInput addTodo={handleAdd} />
+        <TodoInput onSubmitTodo={handleAddTodo} />
         <TodoList
           todoList={[...(todos.data ?? [])]?.reverse()}
-          deleteTodo={handleDelete}
-          doneTodo={handleDone}
+          onDeleteTodo={handleDeleteTodo}
+          onDoneTodo={handleDoneTodo}
         />
       </div>
     </>

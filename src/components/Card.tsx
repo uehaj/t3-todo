@@ -1,16 +1,11 @@
 type Props = {
   children: React.ReactNode;
-  actionArea: React.ReactNode;
-  className?: string;
 };
 
-export default function Card({ children, actionArea, className }: Props) {
+export default function Card({ children }: Props) {
   return (
-    <div className="card w-96 bg-base-100 shadow-xl">
-      <div className="card-body">
-        {children}
-        {actionArea}
-      </div>
+    <div className="card m-2 flex flex-row rounded-lg p-2 shadow-xl">
+      {children}
     </div>
   );
 }
