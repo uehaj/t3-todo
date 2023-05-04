@@ -8,17 +8,82 @@ const TodoApp: NextPage = () => {
   const utils = api.useContext();
   const todos = api.todo.getAll.useQuery();
   const { mutateAsync: todoAddAsync } = api.todo.add.useMutation({
-    onSuccess: () => {
+    async onMutate(newTodoText) {
+      // Cancel outgoing fetches (so they don't overwrite our optimistic update)
+      await utils.todo.getAll.cancel();
+
+      // Get the data from the queryCache
+      const prevData = utils.todo.getAll.getData();
+
+      // Optimistically update the data with our new post
+      utils.todo.getAll.setData(undefined, (old) => {
+        const newTodo = {
+          id: "",
+          done: false,
+          text: newTodoText.text,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        };
+        if (old !== undefined) {
+          return [...old, newTodo];
+        } else {
+          return [newTodo];
+        }
+      });
+
+      // Return the previous data so we can revert if something goes wrong
+      return { prevData };
+    },
+    onSettled: () => {
       void utils.todo.invalidate();
     },
   });
   const { mutateAsync: todoDeleteAsync } = api.todo.delete.useMutation({
-    onSuccess: () => {
+    async onMutate({ id }: { id: string }) {
+      // Cancel outgoing fetches (so they don't overwrite our optimistic update)
+      await utils.todo.getAll.cancel();
+
+      // Get the data from the queryCache
+      const prevData = utils.todo.getAll.getData();
+
+      // Optimistically update the data with our new post
+      utils.todo.getAll.setData(undefined, (old) => {
+        if (old !== undefined) {
+          return prevData?.filter((elem) => elem.id !== id);
+        } else {
+          return old;
+        }
+      });
+      // Return the previous data so we can revert if something goes wrong
+      return { prevData };
+    },
+    onSettled: () => {
       void utils.todo.invalidate();
     },
   });
   const { mutateAsync: todoDoneAsync } = api.todo.done.useMutation({
-    onSuccess: () => {
+    async onMutate({ id, done }: { id: string; done: boolean }) {
+      // Cancel outgoing fetches (so they don't overwrite our optimistic update)
+      await utils.todo.getAll.cancel();
+
+      // Get the data from the queryCache
+      const prevData = utils.todo.getAll.getData();
+
+      // Optimistically update the data with our new post
+      utils.todo.getAll.setData(undefined, (old) => {
+        if (old !== undefined) {
+          return prevData?.map((elem) =>
+            elem.id === id ? { ...elem, done } : elem
+          );
+        } else {
+          return old;
+        }
+      });
+      // Return the previous data so we can revert if something goes wrong
+      return { prevData };
+    },
+
+    onSettled: () => {
       void utils.todo.invalidate();
     },
   });
