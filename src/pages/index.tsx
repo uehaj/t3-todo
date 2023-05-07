@@ -22,7 +22,7 @@ const TodoApp: NextPage = () => {
     },
   });
 
-  function handleSubmit(e: FormEvent) {
+  function handleAddTodo(e: FormEvent) {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
@@ -31,11 +31,11 @@ const TodoApp: NextPage = () => {
     void todoAddAsync(formJson as { text: string });
   }
 
-  function handleDelete(id: string) {
+  function handleDeleteTodo(id: string) {
     void todoDeleteAsync({ id });
   }
 
-  function handleDone(id: string, done: boolean) {
+  function handleDoneTodo(id: string, done: boolean) {
     void todoDoneAsync({ id, done });
   }
 
@@ -49,7 +49,7 @@ const TodoApp: NextPage = () => {
       <div className="container mx-auto p-4">
         <h1 className="mb-4 text-4xl font-bold">Todoアプリ</h1>
         <div>
-          <form className="flex" onSubmit={handleSubmit}>
+          <form className="flex" onSubmit={handleAddTodo}>
             <input
               className="mb-4 mr-4 flex-grow rounded border p-2"
               type="text"
@@ -72,14 +72,14 @@ const TodoApp: NextPage = () => {
                   type="checkbox"
                   className="mr-2"
                   checked={todo.done}
-                  onChange={() => handleDone(todo.id, !todo.done)}
+                  onChange={() => handleDoneTodo(todo.id, !todo.done)}
                 />
                 <span className={todo.done ? "line-through" : ""}>
                   {todo.text}
                 </span>
                 <button
                   className="ml-auto rounded bg-red-500 px-2 py-1 font-bold text-white hover:bg-red-700"
-                  onClick={() => handleDelete(todo.id)}
+                  onClick={() => handleDeleteTodo(todo.id)}
                 >
                   ×
                 </button>
