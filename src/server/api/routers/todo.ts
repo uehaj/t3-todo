@@ -6,11 +6,7 @@ export const todoRouter = createTRPCRouter({
     .meta({ /* 👉 */ openapi: { method: "GET", path: "/todo/getall" } })
     .query(({ ctx }) => {
       return ctx.prisma.todo.findMany({
-        orderBy: [
-          {
-            createdAt: "desc",
-          },
-        ],
+        orderBy: [{ createdAt: "desc" }],
       });
     }),
   add: publicProcedure
