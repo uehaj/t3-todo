@@ -1,9 +1,9 @@
-import { type AppType } from "next/app";
-import { api } from "~/utils/api";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useEffect } from "react";
-import "~/styles/globals.css";
+import { type AppType } from "next/app";
 import { QueryClientProvider, useQueryClient } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { api } from "~/utils/api";
+import "~/styles/globals.css";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   useEffect(() => {

@@ -25,7 +25,7 @@ const TodoApp: NextPage = () => {
           updatedAt: new Date(),
         };
         if (old !== undefined) {
-          return [...old, newTodo];
+          return [newTodo, ...old];
         } else {
           return [newTodo];
         }
@@ -112,7 +112,7 @@ const TodoApp: NextPage = () => {
         <h1 className="mb-4 text-4xl font-bold">Todoアプリ</h1>
         <TodoInput onSubmitTodo={handleAddTodo} />
         <TodoList
-          todoList={[...(todos.data ?? [])]?.reverse()}
+          todoList={[...(todos.data ?? [])]}
           onDeleteTodo={handleDeleteTodo}
           onDoneTodo={handleDoneTodo}
         />

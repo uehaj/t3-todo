@@ -8,7 +8,7 @@ export const todoRouter = createTRPCRouter({
       return ctx.prisma.todo.findMany({
         orderBy: [
           {
-            createdAt: "asc",
+            createdAt: "desc",
           },
         ],
       });
