@@ -1,4 +1,4 @@
-import { Todo } from "@prisma/client";
+import type { Todo } from "@prisma/client";
 import TodoListItem from "./TodoItem";
 
 type Props = {
@@ -19,6 +19,7 @@ export default function TodoList({
           todo={todo}
           onDeleteTodo={onDeleteTodo}
           onDoneTodo={onDoneTodo}
+          key={todo.id}
         />
       ))}
     </div>
