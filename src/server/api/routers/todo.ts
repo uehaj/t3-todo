@@ -4,7 +4,7 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 export const todoRouter = createTRPCRouter({
   getAll: publicProcedure
     .meta({ /* 👉 */ openapi: { method: "GET", path: "/todo/getall" } })
-    .input(z.object({}))
+    .input(z.void())
     .output(
       z.array(
         z.object({
