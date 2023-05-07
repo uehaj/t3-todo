@@ -2,16 +2,19 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
 export const todoRouter = createTRPCRouter({
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.todo.findMany({
-      orderBy: [
-        {
-          id: "desc",
-        },
-      ],
-    });
-  }),
+  getAll: publicProcedure
+    .meta({ /* 👉 */ openapi: { method: "GET", path: "/todo/getall" } })
+    .query(({ ctx }) => {
+      return ctx.prisma.todo.findMany({
+        orderBy: [
+          {
+            createdAt: "asc",
+          },
+        ],
+      });
+    }),
   add: publicProcedure
+    .meta({ /* 👉 */ openapi: { method: "POST", path: "/todo" } })
     .input(
       z.object({
         text: z.string(),
@@ -27,12 +30,14 @@ export const todoRouter = createTRPCRouter({
       });
     }),
   delete: publicProcedure
+    .meta({ /* 👉 */ openapi: { method: "DELETE", path: "/todo/{id}" } })
     .input(z.object({ id: z.string() }))
     .mutation(({ ctx, input }) => {
       const { id } = input;
       return ctx.prisma.todo.delete({ where: { id } });
     }),
   done: publicProcedure
+    .meta({ /* 👉 */ openapi: { method: "PUT", path: "/todo/{id}" } })
     .input(z.object({ id: z.string(), done: z.boolean() }))
     .mutation(({ ctx, input }) => {
       const { id, done } = input;
