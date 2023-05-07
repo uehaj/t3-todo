@@ -63,7 +63,7 @@ const TodoApp: NextPage = () => {
         </div>
         <ul id="taskList" className="list-inside list-disc">
           <ul>
-            {[...(todos.data ?? [])]?.reverse().map((todo) => (
+            {[...(todos.data ?? [])]?.map((todo) => (
               <li
                 className="mb-2 flex items-center rounded bg-white p-2"
                 key={todo.id}
