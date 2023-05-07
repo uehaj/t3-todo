@@ -7,17 +7,17 @@ const TodoApp: NextPage = () => {
   const utils = api.useContext();
   const todos = api.todo.getAll.useQuery();
   const { mutateAsync: todoAddAsync } = api.todo.add.useMutation({
-    onSuccess: () => {
+    onSettled: () => {
       void utils.todo.invalidate();
     },
   });
   const { mutateAsync: todoDeleteAsync } = api.todo.delete.useMutation({
-    onSuccess: () => {
+    onSettled: () => {
       void utils.todo.invalidate();
     },
   });
   const { mutateAsync: todoDoneAsync } = api.todo.done.useMutation({
-    onSuccess: () => {
+    onSettled: () => {
       void utils.todo.invalidate();
     },
   });
@@ -63,7 +63,7 @@ const TodoApp: NextPage = () => {
         </div>
         <ul id="taskList" className="list-inside list-disc">
           <ul>
-            {[...(todos.data ?? [])]?.map((todo) => (
+            {todos.data?.map((todo) => (
               <li
                 className="mb-2 flex items-center rounded bg-white p-2"
                 key={todo.id}
@@ -72,14 +72,14 @@ const TodoApp: NextPage = () => {
                   type="checkbox"
                   className="mr-2"
                   checked={todo.done}
-                  onChange={handleDone.bind(null, todo.id, !todo.done)}
+                  onChange={() => handleDone(todo.id, !todo.done)}
                 />
                 <span className={todo.done ? "line-through" : ""}>
                   {todo.text}
                 </span>
                 <button
                   className="ml-auto rounded bg-red-500 px-2 py-1 font-bold text-white hover:bg-red-700"
-                  onClick={handleDelete.bind(null, todo.id)}
+                  onClick={() => handleDelete(todo.id)}
                 >
                   ×
                 </button>
