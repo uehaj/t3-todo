@@ -4,6 +4,18 @@ import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 export const todoRouter = createTRPCRouter({
   getAll: publicProcedure
     .meta({ /* 👉 */ openapi: { method: "GET", path: "/todo/getall" } })
+    .input(z.object({}))
+    .output(
+      z.array(
+        z.object({
+          id: z.string(),
+          done: z.boolean(),
+          text: z.string(),
+          createdAt: z.date(),
+          updatedAt: z.date(),
+        })
+      )
+    )
     .query(({ ctx }) => {
       return ctx.prisma.todo.findMany({
         orderBy: [{ createdAt: "desc" }],
@@ -14,6 +26,15 @@ export const todoRouter = createTRPCRouter({
     .input(
       z.object({
         text: z.string(),
+      })
+    )
+    .output(
+      z.object({
+        id: z.string(),
+        done: z.boolean(),
+        text: z.string(),
+        createdAt: z.date(),
+        updatedAt: z.date(),
       })
     )
     .mutation(({ ctx, input }) => {
@@ -28,6 +49,15 @@ export const todoRouter = createTRPCRouter({
   delete: publicProcedure
     .meta({ /* 👉 */ openapi: { method: "DELETE", path: "/todo/{id}" } })
     .input(z.object({ id: z.string() }))
+    .output(
+      z.object({
+        id: z.string(),
+        done: z.boolean(),
+        text: z.string(),
+        createdAt: z.date(),
+        updatedAt: z.date(),
+      })
+    )
     .mutation(({ ctx, input }) => {
       const { id } = input;
       return ctx.prisma.todo.delete({ where: { id } });
@@ -35,6 +65,15 @@ export const todoRouter = createTRPCRouter({
   done: publicProcedure
     .meta({ /* 👉 */ openapi: { method: "PUT", path: "/todo/{id}" } })
     .input(z.object({ id: z.string(), done: z.boolean() }))
+    .output(
+      z.object({
+        id: z.string(),
+        done: z.boolean(),
+        text: z.string(),
+        createdAt: z.date(),
+        updatedAt: z.date(),
+      })
+    )
     .mutation(({ ctx, input }) => {
       const { id, done } = input;
       console.log(`id=`, id, ` done=`, done);
