@@ -38,6 +38,13 @@ const TodoApp: NextPage = () => {
       void utils.todo.invalidate();
     },
   });
+  const { mutateAsync: todoAddWithAIAnswer } =
+    api.todo.addWithAIAnswer.useMutation({
+      onSettled: () => {
+        void utils.todo.invalidate();
+      },
+    });
+
   const { mutateAsync: todoDeleteAsync } = api.todo.delete.useMutation({
     async onMutate({ id }: { id: string }) {
       // Cancel outgoing fetches (so they don't overwrite our optimistic update)
@@ -90,7 +97,14 @@ const TodoApp: NextPage = () => {
 
   function handleAddTodo(formData: FormData) {
     const formJson = Object.fromEntries(formData.entries());
-    void todoAddAsync(formJson as { text: string });
+    if (formJson.text?.startsWith("?")) {
+      void todoAddWithAIAnswer({ ...formJson, apiKey: "aa" } as {
+        text: string;
+        apiKey: string;
+      });
+    } else {
+      void todoAddAsync(formJson as { text: string });
+    }
   }
 
   function handleDeleteTodo(id: string) {
