@@ -97,7 +97,7 @@ const TodoApp: NextPage = () => {
 
   function handleAddTodo(formData: FormData) {
     const formJson = Object.fromEntries(formData.entries());
-    if (formJson.text?.startsWith("?")) {
+    if (formJson.text?.toStriong().startsWith("?")) {
       void todoAddWithAIAnswer({ ...formJson, apiKey: "aa" } as {
         text: string;
         apiKey: string;
