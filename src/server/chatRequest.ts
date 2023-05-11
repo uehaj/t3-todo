@@ -26,5 +26,3 @@ export async function sendRequest(prompt: string) {
   const chatGPTReply = response.data.choices[0].message.content;
   return chatGPTReply;
 }
-
-sendRequest(prompt);
