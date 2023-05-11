@@ -61,27 +61,15 @@ export const todoRouter = createTRPCRouter({
       })
     )
     .output(TodoSchema)
-    .mutation(({ ctx, input }) => {
+    .mutation(async ({ ctx, input }) => {
       const { text } = input;
-      const createdTodo = ctx.prisma.todo.create({
+      const result = await sendRequest(text);
+      const createdTodo = await ctx.prisma.todo.create({
         data: {
           done: false,
-          text: text,
+          text: text + "@" + result,
         },
       });
-      (async () => {
-        const result = await sendRequest(text);
-
-        ctx.prisma.todo.update({
-          data: {
-            done: false,
-            text: text + result + "xxxxx",
-          },
-          where: {
-            id: (await createdTodo).id,
-          },
-        });
-      })();
       return createdTodo;
     }),
 });
