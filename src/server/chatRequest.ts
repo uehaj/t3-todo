@@ -2,10 +2,10 @@ import axios from "axios";
 
 const apiKey = process.env["OPENAI_API_KEY"];
 
-export async function sendRequest(prompt: string) {
+export async function sendRequest(prompt: string): Promise<string> {
   const headers = {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${apiKey}`,
+    Authorization: `Bearer ${apiKey ?? ""}`,
   };
 
   const data = {
@@ -23,6 +23,8 @@ export async function sendRequest(prompt: string) {
     data,
     { headers }
   );
+  // eslint-disable-next-line
   const chatGPTReply = response.data.choices[0].message.content;
+  // eslint-disable-next-line
   return chatGPTReply;
 }

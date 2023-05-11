@@ -54,7 +54,7 @@ export const createTRPCContext = (_opts: CreateNextContextOptions) => {
  * errors on the backend.
  */
 import { initTRPC } from "@trpc/server";
-import { OpenApiMeta } from "trpc-openapi";
+import type { OpenApiMeta } from "trpc-openapi";
 import superjson from "superjson";
 import { ZodError } from "zod";
 

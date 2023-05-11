@@ -67,7 +67,7 @@ export const todoRouter = createTRPCRouter({
       const createdTodo = await ctx.prisma.todo.create({
         data: {
           done: false,
-          text: text + "@" + result,
+          text: `text@${result}`,
         },
       });
       return createdTodo;
