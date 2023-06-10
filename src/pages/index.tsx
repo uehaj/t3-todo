@@ -2,6 +2,20 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { api } from "~/utils/api";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
+const FormSchema = z
+  .object({
+    text: z.string().min(1, { message: "送信メッセージを入力して下さい" }),
+  })
+  .transform((x) => {
+    return {
+      ...x,
+      textLen: x.text.length,
+    };
+  });
+type FormSchemaType = z.infer<typeof FormSchema>;
 
 const TodoApp: NextPage = () => {
   const {
@@ -9,7 +23,9 @@ const TodoApp: NextPage = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm();
+  } = useForm<FormSchemaType>({
+    resolver: zodResolver(FormSchema),
+  });
   const utils = api.useContext();
   const todos = api.todo.getAll.useQuery();
   const { mutateAsync: todoAddAsync } = api.todo.add.useMutation({
@@ -27,8 +43,8 @@ const TodoApp: NextPage = () => {
       void utils.todo.invalidate();
     },
   });
-  function handleAddTodo(formData: { text: string | undefined }) {
-    void todoAddAsync(formData as { text: string });
+  function handleAddTodo(formData: FormSchemaType) {
+    void todoAddAsync({ text: formData.text });
     reset();
   }
   function handleDeleteTodo(id: string) {
@@ -60,9 +76,11 @@ const TodoApp: NextPage = () => {
               タスクを追加
             </button>
           </form>
-          {errors.text && (
+          {errors.text?.message && (
             <p className="mt-2 text-xs text-red-600" id="email-error">
-              入力が必須の項目です
+              {typeof errors.text?.message === "string"
+                ? errors.text?.message
+                : ""}
             </p>
           )}
         </div>

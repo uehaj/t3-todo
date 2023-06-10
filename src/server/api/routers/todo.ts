@@ -1,24 +1,23 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+
+export const TodoSchema = z.object({
+  text: z.string(),
+});
+
 export const todoRouter = createTRPCRouter({
   getAll: publicProcedure.input(z.void()).query(({ ctx }) => {
     return ctx.prisma.todo.findMany({ orderBy: [{ createdAt: "desc" }] });
   }),
-  add: publicProcedure
-    .input(
-      z.object({
-        text: z.string(),
-      })
-    )
-    .mutation(({ ctx, input }) => {
-      const { text } = input;
-      return ctx.prisma.todo.create({
-        data: {
-          done: false,
-          text,
-        },
-      });
-    }),
+  add: publicProcedure.input(TodoSchema).mutation(({ ctx, input }) => {
+    const { text } = input;
+    return ctx.prisma.todo.create({
+      data: {
+        done: false,
+        text,
+      },
+    });
+  }),
   delete: publicProcedure
     .input(z.object({ id: z.string() }))
     .mutation(({ ctx, input }) => {
