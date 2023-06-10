@@ -1,8 +1,15 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import type { FormEvent } from "react";
 import { api } from "~/utils/api";
+import { useForm } from "react-hook-form";
+
 const TodoApp: NextPage = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
   const utils = api.useContext();
   const todos = api.todo.getAll.useQuery();
   const { mutateAsync: todoAddAsync } = api.todo.add.useMutation({
@@ -20,13 +27,9 @@ const TodoApp: NextPage = () => {
       void utils.todo.invalidate();
     },
   });
-  function handleAddTodo(e: FormEvent) {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const formData = new FormData(form);
-    const formJson = Object.fromEntries(formData.entries());
-    form.reset();
-    void todoAddAsync(formJson as { text: string });
+  function handleAddTodo(formData: { text: string | undefined }) {
+    void todoAddAsync(formData as { text: string });
+    reset();
   }
   function handleDeleteTodo(id: string) {
     void todoDeleteAsync({ id });
@@ -34,6 +37,7 @@ const TodoApp: NextPage = () => {
   function handleDoneTodo(id: string, done: boolean) {
     void todoDoneAsync({ id, done });
   }
+
   return (
     <>
       <Head>
@@ -44,8 +48,9 @@ const TodoApp: NextPage = () => {
       <div className="container mx-auto p-4">
         <h1 className="mb-4 text-4xl font-bold">Todoアプリ</h1>
         <div>
-          <form className="flex" onSubmit={handleAddTodo}>
+          <form className="flex" onSubmit={handleSubmit(handleAddTodo)}>
             <input
+              {...register("text", { required: true })}
               className="mb-4 mr-4 flex-grow rounded border p-2"
               type="text"
               name="text"
@@ -55,6 +60,11 @@ const TodoApp: NextPage = () => {
               タスクを追加
             </button>
           </form>
+          {errors.text && (
+            <p className="mt-2 text-xs text-red-600" id="email-error">
+              入力が必須の項目です
+            </p>
+          )}
         </div>
         <ul id="taskList" className="list-inside list-disc">
           <ul>
