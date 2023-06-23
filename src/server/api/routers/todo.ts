@@ -9,26 +9,31 @@ export const TodoSchema = z.object({
   updatedAt: z.date(),
 });
 
+export const NewTodoSchema = z.object({
+  done: z.boolean(),
+  text: z.string(),
+});
+
 export type Todo = z.infer<typeof TodoSchema>;
 
 export const todoRouter = createTRPCRouter({
-  getAll: publicProcedure
+  getList: publicProcedure
     .meta({ openapi: { method: "GET", path: "/todo" } })
     .input(z.void())
     .output(z.array(TodoSchema))
     .query(({ ctx }) => {
       return ctx.prisma.todo.findMany({ orderBy: [{ createdAt: "desc" }] });
     }),
-  get: publicProcedure
+  getOne: publicProcedure
     .meta({ openapi: { method: "GET", path: "/todo/{id}" } })
     .input(z.object({ id: z.string() }))
     .output(TodoSchema)
     .query(({ ctx, input }) => {
       return ctx.prisma.todo.findUniqueOrThrow({ where: { id: input.id } });
     }),
-  add: publicProcedure
+  create: publicProcedure
     .meta({ openapi: { method: "POST", path: "/todo" } })
-    .input(TodoSchema)
+    .input(NewTodoSchema)
     .output(TodoSchema)
     .mutation(({ ctx, input }) => {
       const { text } = input;
@@ -39,7 +44,18 @@ export const todoRouter = createTRPCRouter({
         },
       });
     }),
-  delete: publicProcedure
+  update: publicProcedure
+    .meta({ openapi: { method: "PATCH", path: "/todo/{id}" } })
+    .input(TodoSchema)
+    .output(TodoSchema)
+    .mutation(({ ctx, input }) => {
+      console.log(`intut=`, input);
+      return ctx.prisma.todo.update({
+        where: { id: input.id },
+        data: input,
+      });
+    }),
+  deleteOne: publicProcedure
     .meta({ openapi: { method: "DELETE", path: "/todo/{id}" } })
     .input(z.object({ id: z.string() }))
     .output(TodoSchema)
@@ -47,13 +63,13 @@ export const todoRouter = createTRPCRouter({
       const { id } = input;
       return ctx.prisma.todo.delete({ where: { id } });
     }),
-  done: publicProcedure
-    .meta({ openapi: { method: "PUT", path: "/todo/{id}" } })
-    .input(z.object({ id: z.string(), done: z.boolean() }))
-    .output(TodoSchema)
-    .mutation(({ ctx, input }) => {
-      const { id, done } = input;
-      console.log(`id=`, id, ` done=`, done);
-      return ctx.prisma.todo.update({ where: { id }, data: { done } });
-    }),
+  // done: publicProcedure
+  //   .meta({ openapi: { method: "PUT", path: "/todo/{id}" } })
+  //   .input(z.object({ id: z.string(), done: z.boolean() }))
+  //   .output(TodoSchema)
+  //   .mutation(({ ctx, input }) => {
+  //     const { id, done } = input;
+  //     console.log(`id=`, id, ` done=`, done);
+  //     return ctx.prisma.todo.update({ where: { id }, data: { done } });
+  //   }),
 });

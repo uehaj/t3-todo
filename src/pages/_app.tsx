@@ -26,6 +26,8 @@ const App: AppType = ({ Component, pageProps }) => {
             name: "todo",
             list: "/todo",
             show: "/todo/show/:id",
+            create: "/todo/create",
+            edit: "/todo/edit/:id",
           },
         ]}
       >
