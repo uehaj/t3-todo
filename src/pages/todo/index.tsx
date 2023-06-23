@@ -1,4 +1,5 @@
 import { useTable } from "@refinedev/core";
+import { MantineInferencer } from "@refinedev/inferencer/mantine";
 import Link from "next/link";
 
 import type { Todo } from "~/server/api/routers/todo";
@@ -18,13 +19,9 @@ export default function TodoList() {
     <div>
       {isLoading && <p>Loading...</p>}
       {!isLoading && (
-        <ul>
-          {tableData?.map((todo) => (
-            <li key={todo.id}>
-              <Link href={`/todo/show/${todo.id}`}>{todo.text}</Link>
-            </li>
-          ))}
-        </ul>
+        <>
+          <MantineInferencer />
+        </>
       )}
     </div>
   );

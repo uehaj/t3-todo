@@ -32,8 +32,8 @@ const App: AppType = ({ Component, pageProps }) => {
         ]}
       >
         <ThemedLayoutV2>
-          {/*<Component {...pageProps} />*/}
-          <MantineInferencer />
+          <Component {...pageProps} />
+          {/*<MantineInferencer />*/}
         </ThemedLayoutV2>
       </Refine>
     </MantineProvider>
