@@ -4,6 +4,7 @@ import { api } from "~/utils/api";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useState } from "react";
 
 const FormSchema = z
   .object({
@@ -27,24 +28,25 @@ const TodoApp: NextPage = () => {
     resolver: zodResolver(FormSchema),
   });
   const utils = api.useContext();
-  const todos = api.todo.getAll.useQuery();
-  const { mutateAsync: todoAddAsync } = api.todo.add.useMutation({
+  const todos = api.todo.getList.useQuery();
+
+  const { mutateAsync: todoAddAsync } = api.todo.create.useMutation({
     onSettled: () => {
       void utils.todo.invalidate();
     },
   });
-  const { mutateAsync: todoDeleteAsync } = api.todo.delete.useMutation({
+  const { mutateAsync: todoDeleteAsync } = api.todo.deleteOne.useMutation({
     onSettled: () => {
       void utils.todo.invalidate();
     },
   });
-  const { mutateAsync: todoDoneAsync } = api.todo.done.useMutation({
+  const { mutateAsync: todoDoneAsync } = api.todo.update.useMutation({
     onSettled: () => {
       void utils.todo.invalidate();
     },
   });
   function handleAddTodo(formData: FormSchemaType) {
-    void todoAddAsync({ text: formData.text });
+    void todoAddAsync({ text: formData.text, done: false });
     reset();
   }
   function handleDeleteTodo(id: string) {

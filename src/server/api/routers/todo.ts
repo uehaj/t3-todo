@@ -9,9 +9,15 @@ export const TodoSchema = z.object({
   updatedAt: z.date(),
 });
 
-export const NewTodoSchema = z.object({
+export const CreateTodoSchema = z.object({
   done: z.boolean(),
   text: z.string(),
+});
+
+export const UpdateTodoSchema = z.object({
+  id: z.string(),
+  done: z.boolean().optional(),
+  text: z.string().optional(),
 });
 
 export type Todo = z.infer<typeof TodoSchema>;
@@ -33,7 +39,7 @@ export const todoRouter = createTRPCRouter({
     }),
   create: publicProcedure
     .meta({ openapi: { method: "POST", path: "/todo" } })
-    .input(NewTodoSchema)
+    .input(CreateTodoSchema)
     .output(TodoSchema)
     .mutation(({ ctx, input }) => {
       const { text } = input;
@@ -46,7 +52,7 @@ export const todoRouter = createTRPCRouter({
     }),
   update: publicProcedure
     .meta({ openapi: { method: "PATCH", path: "/todo/{id}" } })
-    .input(TodoSchema)
+    .input(UpdateTodoSchema)
     .output(TodoSchema)
     .mutation(({ ctx, input }) => {
       console.log(`intut=`, input);
@@ -60,6 +66,7 @@ export const todoRouter = createTRPCRouter({
     .input(z.object({ id: z.string() }))
     .output(TodoSchema)
     .mutation(({ ctx, input }) => {
+      console.log(`input=`, input);
       const { id } = input;
       return ctx.prisma.todo.delete({ where: { id } });
     }),
