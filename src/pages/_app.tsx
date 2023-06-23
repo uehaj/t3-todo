@@ -28,6 +28,9 @@ const App: AppType = ({ Component, pageProps }) => {
             show: "/todo/show/:id",
             create: "/todo/create",
             edit: "/todo/edit/:id",
+            meta: {
+              canDelete: true,
+            },
           },
         ]}
       >
