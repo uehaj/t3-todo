@@ -27,8 +27,12 @@ export const todoRouter = createTRPCRouter({
     .meta({ openapi: { method: "GET", path: "/todo" } })
     .input(z.void())
     .output(z.array(TodoSchema))
-    .query(({ ctx }) => {
-      return ctx.prisma.todo.findMany({ orderBy: [{ createdAt: "desc" }] });
+    .query(async ({ ctx }) => {
+      const result = ctx.prisma.todo.findMany({
+        orderBy: [{ createdAt: "desc" }],
+      });
+      console.log(`result=`, await result);
+      return result;
     }),
   getOne: publicProcedure
     .meta({ openapi: { method: "GET", path: "/todo/{id}" } })
@@ -55,7 +59,6 @@ export const todoRouter = createTRPCRouter({
     .input(UpdateTodoSchema)
     .output(TodoSchema)
     .mutation(({ ctx, input }) => {
-      console.log(`intut=`, input);
       return ctx.prisma.todo.update({
         where: { id: input.id },
         data: input,
@@ -66,17 +69,7 @@ export const todoRouter = createTRPCRouter({
     .input(z.object({ id: z.string() }))
     .output(TodoSchema)
     .mutation(({ ctx, input }) => {
-      console.log(`input=`, input);
       const { id } = input;
       return ctx.prisma.todo.delete({ where: { id } });
     }),
-  // done: publicProcedure
-  //   .meta({ openapi: { method: "PUT", path: "/todo/{id}" } })
-  //   .input(z.object({ id: z.string(), done: z.boolean() }))
-  //   .output(TodoSchema)
-  //   .mutation(({ ctx, input }) => {
-  //     const { id, done } = input;
-  //     console.log(`id=`, id, ` done=`, done);
-  //     return ctx.prisma.todo.update({ where: { id }, data: { done } });
-  //   }),
 });
