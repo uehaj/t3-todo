@@ -1,5 +1,9 @@
 import React from "react";
-import { IResourceComponentsProps } from "@refinedev/core";
+import {
+  IResourceComponentsProps,
+  GetManyResponse,
+  useMany,
+} from "@refinedev/core";
 import { useTable } from "@refinedev/react-table";
 import { ColumnDef, flexRender } from "@tanstack/react-table";
 import { ScrollArea, Table, Pagination, Group } from "@mantine/core";
@@ -11,48 +15,29 @@ import {
   DateField,
 } from "@refinedev/mantine";
 
-export const ContractList: React.FC<IResourceComponentsProps> = () => {
+export const UserList: React.FC<IResourceComponentsProps> = () => {
   const columns = React.useMemo<ColumnDef<any>[]>(
     () => [
+      {
+        id: "contractId",
+        header: "Contract",
+        accessorKey: "contractId",
+        cell: function render({ getValue, table }) {
+          const meta = table.options.meta as {
+            contractData: GetManyResponse;
+          };
+
+          const contract = meta.contractData?.data?.find(
+            (item) => item.id == getValue<any>()
+          );
+
+          return contract ?? "Loading...";
+        },
+      },
       {
         id: "id",
         accessorKey: "id",
         header: "Id",
-      },
-      {
-        id: "userRepresentativeName",
-        accessorKey: "userRepresentativeName",
-        header: "User Representative Name",
-      },
-      {
-        id: "userRepresentativeEmail",
-        accessorKey: "userRepresentativeEmail",
-        header: "User Representative Email",
-      },
-      {
-        id: "openAIAccountEmail",
-        accessorKey: "openAIAccountEmail",
-        header: "Open AIAccount Email",
-      },
-      {
-        id: "openAIAccountBillingURL",
-        accessorKey: "openAIAccountBillingURL",
-        header: "Open AIAccount Billing URL",
-      },
-      {
-        id: "openAIAccountPassword",
-        accessorKey: "openAIAccountPassword",
-        header: "Open AIAccount Password",
-      },
-      {
-        id: "openAIApiKey",
-        accessorKey: "openAIApiKey",
-        header: "Open AIApi Key",
-      },
-      {
-        id: "monthlyBillingLimit",
-        accessorKey: "monthlyBillingLimit",
-        header: "Monthly Billing Limit",
       },
       {
         id: "createdAt",
@@ -102,10 +87,19 @@ export const ContractList: React.FC<IResourceComponentsProps> = () => {
     columns,
   });
 
+  const { data: contractData } = useMany({
+    resource: "contract",
+    ids: tableData?.data?.map((item) => item?.contractId) ?? [],
+    queryOptions: {
+      enabled: !!tableData?.data,
+    },
+  });
+
   setOptions((prev) => ({
     ...prev,
     meta: {
       ...prev.meta,
+      contractData,
     },
   }));
 
@@ -131,22 +125,20 @@ export const ContractList: React.FC<IResourceComponentsProps> = () => {
             ))}
           </thead>
           <tbody>
-            {getRowModel().rows.map((row) => {
-              return (
-                <tr key={row.id}>
-                  {row.getVisibleCells().map((cell) => {
-                    return (
-                      <td key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
+            {getRowModel().rows.map((row) => (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => {
+                  return (
+                    <td key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
           </tbody>
         </Table>
       </ScrollArea>
@@ -161,4 +153,4 @@ export const ContractList: React.FC<IResourceComponentsProps> = () => {
   );
 };
 
-export default ContractList;
+export default UserList;

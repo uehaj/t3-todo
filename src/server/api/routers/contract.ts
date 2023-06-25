@@ -1,19 +1,6 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 
-export const ContractSchema = z.object({
-  id: z.string(),
-  userRepresentativeName: z.string(),
-  userRepresentativeEmail: z.string(),
-  openAIAccountEmail: z.string(),
-  openAIAccountBillingURL: z.string(),
-  openAIAccountPassword: z.string(),
-  openAIApiKey: z.string(),
-  monthlyBillingLimit: z.number(),
-  createdAt: z.date(),
-  updatedAt: z.date(),
-});
-
 export const CreateContractSchema = z.object({
   userRepresentativeName: z.string(),
   userRepresentativeEmail: z.string(),
@@ -24,16 +11,17 @@ export const CreateContractSchema = z.object({
   monthlyBillingLimit: z.number(),
 });
 
-export const UpdateContractSchema = z.object({
+export const ContractSchema = CreateContractSchema.extend({
   id: z.string(),
-  userRepresentativeName: z.string().optional(),
-  userRepresentativeEmail: z.string().optional(),
-  openAIAccountEmail: z.string().optional(),
-  openAIAccountBillingURL: z.string().optional(),
-  openAIAccountPassword: z.string().optional(),
-  openAIApiKey: z.string().optional(),
-  monthlyBillingLimit: z.number().optional(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
 });
+
+export const UpdateContractSchema = z
+  .object({
+    id: z.string(),
+  })
+  .merge(CreateContractSchema.partial());
 
 export type Contract = z.infer<typeof ContractSchema>;
 

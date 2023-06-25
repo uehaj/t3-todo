@@ -1,4 +1,5 @@
 import { contractRouter } from "~/server/api/routers/contract";
+import { userRouter } from "~/server/api/routers/user";
 import { todoRouter } from "~/server/api/routers/todo";
 import { createTRPCRouter } from "~/server/api/trpc";
 
@@ -9,6 +10,7 @@ import { createTRPCRouter } from "~/server/api/trpc";
  */
 export const appRouter = createTRPCRouter({
   contract: contractRouter,
+  user: userRouter,
   todo: todoRouter,
 });
 

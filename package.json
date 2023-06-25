@@ -7,11 +7,13 @@
     "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "refine": "refine"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.0",
     "@prisma/client": "^4.14.0",
+    "@refinedev/cli": "^2.7.0",
     "@refinedev/inferencer": "^4.1.4",
     "@refinedev/mantine": "^2.20.0",
     "@refinedev/nextjs-router": "^5.3.2",
@@ -23,7 +25,9 @@
     "@trpc/next": "^10.26.0",
     "@trpc/react-query": "^10.26.0",
     "@trpc/server": "^10.26.0",
+    "axios": "^0.26.1",
     "next": "^13.4.2",
+    "query-string": "^7.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.45.0",
