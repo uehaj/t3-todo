@@ -21,7 +21,7 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
       <Title my="xs" order={5}>
         Contract
       </Title>
-      {contractIsLoading ? <>Loading...</> : <>{contractData?.data}</>}
+      {contractIsLoading ? <>Loading...</> : <>{contractData?.data.id}</>}
       <Title my="xs" order={5}>
         Id
       </Title>

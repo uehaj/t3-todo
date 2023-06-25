@@ -27,6 +27,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
           label="Contract"
           {...getInputProps("contractId")}
           {...contractSelectProps}
+          filter={() => true}
         />
       }
       <TextInput mt="sm" disabled label="Id" {...getInputProps("id")} />

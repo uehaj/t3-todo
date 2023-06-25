@@ -31,7 +31,7 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
             (item) => item.id == getValue<any>()
           );
 
-          return contract ?? "Loading...";
+          return contract?.id ?? "Loading...";
         },
       },
       {
