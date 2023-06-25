@@ -65,25 +65,16 @@ const App: AppType = ({ Component, pageProps, router }) => {
       >
         <ThemedLayoutV2>
           {(() => {
-            if (router.pathname.startsWith("/todo")) {
-              if (
-                router.pathname === "/todo" ||
-                router.pathname === "/todo/create"
-              ) {
-                return <Component {...pageProps} />;
-              }
-            } else if (router.pathname.startsWith("/contract")) {
-              if (router.pathname === "/contract") {
-                return <Component {...pageProps} />;
-              }
-            } else if (router.pathname.startsWith("/user")) {
-              if (
-                router.pathname === "/user" ||
-                router.pathname.startsWith("/user/edit") ||
-                router.pathname.startsWith("/user/show")
-              ) {
-                return <Component {...pageProps} />;
-              }
+            if (
+              router.pathname === "/todo" ||
+              router.pathname === "/todo/create" ||
+              router.pathname.startsWith("/todo/edit") ||
+              router.pathname === "/contract" ||
+              router.pathname === "/user" ||
+              router.pathname.startsWith("/user/edit") ||
+              router.pathname.startsWith("/user/show")
+            ) {
+              return <Component {...pageProps} />;
             }
             return <MantineInferencer />;
           })()}

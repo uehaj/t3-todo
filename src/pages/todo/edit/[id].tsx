@@ -1,38 +1,34 @@
 import { IResourceComponentsProps } from "@refinedev/core";
-import { Edit, useForm, useSelect } from "@refinedev/mantine";
-import { Select, TextInput } from "@mantine/core";
+import { Edit, useForm } from "@refinedev/mantine";
+import { TextInput, Checkbox } from "@mantine/core";
 
-export const UserEdit: React.FC<IResourceComponentsProps> = () => {
+export const TodoEdit: React.FC<IResourceComponentsProps> = () => {
   const {
     getInputProps,
     saveButtonProps,
     setFieldValue,
     refineCore: { queryResult },
   } = useForm({
-    initialValues: { contractId: "", id: "", createdAt: "", updatedAt: "" },
+    initialValues: {
+      id: "",
+      done: "",
+      text: "",
+      createdAt: "",
+      updatedAt: "",
+    },
   });
 
-  const userData = queryResult?.data?.data;
-
-  const { selectProps: contractSelectProps } = useSelect({
-    resource: "contract",
-    defaultValue: userData?.contractId,
-  });
+  const todoData = queryResult?.data?.data;
 
   return (
     <Edit saveButtonProps={saveButtonProps}>
-      <Select
-        mt="sm"
-        label="Contract"
-        {...getInputProps("contractId")}
-        {...contractSelectProps}
-        filter={() => true}
-        data={contractSelectProps.data.map((elem) => ({
-          ...elem,
-          label: elem.value,
-        }))}
-      />
       <TextInput mt="sm" disabled label="Id" {...getInputProps("id")} />
+      <Checkbox
+        mt="sm"
+        label="Done"
+        {...getInputProps("done", { type: "checkbox" })}
+      />
+      <TextInput mt="sm" label="Text" {...getInputProps("text")} />
       {/* 
                     DatePicker component is not included in "@refinedev/mantine" package.
                     To use a <DatePicker> component, you can follow the official documentation for Mantine.
@@ -51,4 +47,4 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
   );
 };
 
-export default UserEdit;
+export default TodoEdit;
