@@ -25,7 +25,7 @@ export const TodoList: React.FC<IResourceComponentsProps> = () => {
         accessorKey: "done",
         header: "Done",
         cell: function render({ getValue }) {
-          return <BooleanField value={getValue<any>()} />;
+          return <BooleanField value={getValue<boolean>()} />;
         },
       },
       {
@@ -38,7 +38,7 @@ export const TodoList: React.FC<IResourceComponentsProps> = () => {
         accessorKey: "createdAt",
         header: "Created At",
         cell: function render({ getValue }) {
-          return <DateField value={getValue<any>()} />;
+          return <DateField value={getValue<string>()} />;
         },
       },
       {
@@ -46,7 +46,7 @@ export const TodoList: React.FC<IResourceComponentsProps> = () => {
         accessorKey: "updatedAt",
         header: "Updated At",
         cell: function render({ getValue }) {
-          return <DateField value={getValue<any>()} />;
+          return <DateField value={getValue<string>()} />;
         },
       },
       {

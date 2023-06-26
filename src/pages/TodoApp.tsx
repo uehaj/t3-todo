@@ -66,7 +66,7 @@ const TodoApp: NextPage = () => {
       <div className="container mx-auto p-4">
         <h1 className="mb-4 text-4xl font-bold">Todoアプリ</h1>
         <div>
-          <form className="flex" onSubmit={handleSubmit(handleAddTodo)}>
+          <form className="flex" onSubmit={void handleSubmit(handleAddTodo)}>
             <input
               {...register("text", { required: true })}
               className="mb-4 mr-4 flex-grow rounded border p-2"

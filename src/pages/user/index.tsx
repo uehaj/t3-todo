@@ -44,7 +44,7 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
         accessorKey: "createdAt",
         header: "Created At",
         cell: function render({ getValue }) {
-          return <DateField value={getValue<any>()} />;
+          return <DateField value={getValue<string>()} />;
         },
       },
       {
@@ -52,7 +52,7 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
         accessorKey: "updatedAt",
         header: "Updated At",
         cell: function render({ getValue }) {
-          return <DateField value={getValue<any>()} />;
+          return <DateField value={getValue<string>()} />;
         },
       },
       {
@@ -89,6 +89,7 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
 
   const { data: contractData } = useMany({
     resource: "contract",
+    // eslint-disable-next-line
     ids: tableData?.data?.map((item) => item?.contractId) ?? [],
     queryOptions: {
       enabled: !!tableData?.data,

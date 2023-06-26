@@ -10,6 +10,7 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
 
   const { data: contractData, isLoading: contractIsLoading } = useOne({
     resource: "contract",
+    /* eslint-disable-next-line */
     id: record?.contractId || "",
     queryOptions: {
       enabled: !!record,
@@ -29,11 +30,11 @@ export const UserShow: React.FC<IResourceComponentsProps> = () => {
       <Title my="xs" order={5}>
         Created At
       </Title>
-      <DateField value={record?.createdAt} />
+      <DateField value={record?.createdAt as string} />
       <Title my="xs" order={5}>
         Updated At
       </Title>
-      <DateField value={record?.updatedAt} />
+      <DateField value={record?.updatedAt as string} />
     </Show>
   );
 };

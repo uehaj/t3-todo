@@ -1,4 +1,4 @@
-import { type AppType } from "next/app";
+import { AppProps, type AppType } from "next/app";
 import { api } from "~/utils/api";
 import "~/styles/globals.css";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
@@ -10,7 +10,7 @@ import { ThemedLayoutV2, RefineThemes } from "@refinedev/mantine";
 import { MantineProvider, Global } from "@mantine/core";
 import { MantineInferencer } from "@refinedev/inferencer/mantine";
 
-const App: AppType = ({ Component, pageProps, router }) => {
+const App: AppType = ({ Component, pageProps, router }: AppProps) => {
   if (router.pathname === "/TodoApp") {
     return (
       <div>

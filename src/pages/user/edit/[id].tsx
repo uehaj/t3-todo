@@ -1,6 +1,7 @@
 import { IResourceComponentsProps } from "@refinedev/core";
 import { Edit, useForm, useSelect } from "@refinedev/mantine";
 import { Select, TextInput } from "@mantine/core";
+import { User } from "~/server/api/routers/user";
 
 export const UserEdit: React.FC<IResourceComponentsProps> = () => {
   const {
@@ -8,7 +9,7 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
     saveButtonProps,
     setFieldValue,
     refineCore: { queryResult },
-  } = useForm({
+  } = useForm<User>({
     initialValues: { contractId: "", id: "", createdAt: "", updatedAt: "" },
   });
 
@@ -21,14 +22,18 @@ export const UserEdit: React.FC<IResourceComponentsProps> = () => {
 
   return (
     <Edit saveButtonProps={saveButtonProps}>
+      {JSON.stringify(contractSelectProps)}
       <Select
         mt="sm"
         label="Contract"
         {...getInputProps("contractId")}
         {...contractSelectProps}
         filter={() => true}
-        data={contractSelectProps.data.map((elem) => ({
+        // eslint-disable-next-line
+        data={contractSelectProps.data.map((elem: any) => ({
+          // eslint-disable-next-line
           ...elem,
+          // eslint-disable-next-line
           label: elem.value,
         }))}
       />
