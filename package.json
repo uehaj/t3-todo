@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.0",
-    "@prisma/client": "^4.14.0",
+    "@prisma/client": "^4.16.1",
     "@refinedev/cli": "^2.7.0",
     "@refinedev/inferencer": "^4.1.4",
     "@refinedev/mantine": "^2.20.0",
@@ -49,7 +49,7 @@
     "postcss": "^8.4.21",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.2.8",
-    "prisma": "^4.14.0",
+    "prisma": "^4.16.1",
     "tailwindcss": "^3.3.0",
     "typescript": "^5.0.4"
   },

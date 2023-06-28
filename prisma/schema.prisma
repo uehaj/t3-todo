@@ -1,51 +1,53 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
-datasource db {
-    provider = "sqlite"
-    url      = env("DATABASE_URL")
-}
-model Todo {
-    id        String   @id @default(cuid())
-    done      Boolean
-    text      String
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Todo {
+  id   String  @id @default(cuid())
+  done Boolean
+  text String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Contract {
-  id                          String    @id @default(cuid())
-  userRepresentativeName      String
-  userRepresentativeEmail     String    @unique
-  openAIAccountEmail          String
-  openAIAccountBillingURL     String
-  openAIAccountPassword       String
-  openAIApiKey                String
-  monthlyBillingLimit         Int
-  serviceInstance             ServiceInstance?
-  user                        User[]
+  id                      String           @id @default(cuid())
+  userRepresentativeName  String
+  userRepresentativeEmail String           @unique
+  openAIAccountEmail      String
+  openAIAccountBillingURL String
+  openAIAccountPassword   String
+  openAIApiKey            String
+  monthlyBillingLimit     Int
+  serviceInstance         ServiceInstance?
+  user                    User[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model ServiceInstance {
-  id              String    @id @default(cuid())
-  containerId     String
-  contract        Contract  @relation(fields: [contractId], references: [id])
-  contractId      String    @unique
+  id          String   @id @default(cuid())
+  containerId String
+  contract    Contract @relation(fields: [contractId], references: [id])
+  contractId  String   @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model User {
-  id              String    @id @default(cuid())
-  Contract        Contract  @relation(fields: [contractId], references: [id])
-  contractId      String
-  conversationLogs ConversationLog[]
-  auditLogId      String
+  id                String              @id @default(cuid())
+  Contract          Contract            @relation(fields: [contractId], references: [id])
+  contractId        String
+  conversationLogs  ConversationLog[]
+  auditLogId        String
   businessKnowledge BusinessKnowledge[]
 
   createdAt DateTime @default(now())
@@ -53,19 +55,19 @@ model User {
 }
 
 model ConversationLog {
-  id      String @id @default(cuid())
-  User    User   @relation(fields: [userId], references: [id])
-  userId  String
+  id     String @id @default(cuid())
+  User   User   @relation(fields: [userId], references: [id])
+  userId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model BusinessKnowledge {
-  id              String @id @default(cuid())
-  displayName     String
-  User            User   @relation(fields: [userId], references: [id])
-  userId          String
+  id                     String                  @id @default(cuid())
+  displayName            String
+  User                   User                    @relation(fields: [userId], references: [id])
+  userId                 String
   businessKnowledgeFiles BusinessKnowledgeFile[]
 
   createdAt DateTime @default(now())
@@ -73,11 +75,17 @@ model BusinessKnowledge {
 }
 
 model BusinessKnowledgeFile {
-  id              String @id @default(cuid())
+  id                        String            @id @default(cuid())
   businessKnowledgeFileName String
-  businessKnowledge BusinessKnowledge @relation(fields: [businessKnowledgeId], references: [id])
-  businessKnowledgeId String
+  businessKnowledge         BusinessKnowledge @relation(fields: [businessKnowledgeId], references: [id])
+  businessKnowledgeId       String
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
