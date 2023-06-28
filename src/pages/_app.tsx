@@ -64,13 +64,16 @@ const App: AppType = ({ Component, pageProps, router }: AppProps) => {
         ]}
       >
         <ThemedLayoutV2>
+          {router.pathname}
           {(() => {
             if (
+              router.pathname === "/" ||
               router.pathname === "/todo" ||
               router.pathname === "/todo/create" ||
               router.pathname.startsWith("/todo/edit") ||
               router.pathname === "/contract" ||
               router.pathname === "/user" ||
+              router.pathname.startsWith("/user/create") ||
               router.pathname.startsWith("/user/edit") ||
               router.pathname.startsWith("/user/show")
             ) {
