@@ -64,7 +64,6 @@ const App: AppType = ({ Component, pageProps, router }: AppProps) => {
         ]}
       >
         <ThemedLayoutV2>
-          {router.pathname}
           {(() => {
             if (
               router.pathname === "/" ||
