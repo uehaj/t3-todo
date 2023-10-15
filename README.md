@@ -5,7 +5,9 @@ IT Media連載記事[TypeScriptベースのフルスタックフレームワー�
 ## 実行手順
 
 ```
+> cd t3-todo
 > cp .env.sample .env
+> npm install
 > npx prisma db push
 > npm run dev
 
