@@ -6,16 +6,19 @@ import { api } from "~/utils/api";
 const TodoApp: NextPage = () => {
   const utils = api.useContext();
   const todos = api.todo.getAll.useQuery();
+
   const { mutateAsync: todoAddAsync } = api.todo.add.useMutation({
     onSettled: () => {
       void utils.todo.invalidate();
     },
   });
+
   const { mutateAsync: todoDeleteAsync } = api.todo.delete.useMutation({
     onSettled: () => {
       void utils.todo.invalidate();
     },
   });
+
   const { mutateAsync: todoDoneAsync } = api.todo.done.useMutation({
     onSettled: () => {
       void utils.todo.invalidate();
@@ -91,5 +94,4 @@ const TodoApp: NextPage = () => {
     </>
   );
 };
-
 export default TodoApp;
